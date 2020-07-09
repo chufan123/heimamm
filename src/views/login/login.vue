@@ -1,6 +1,13 @@
 <template>
   <div class="login">
-    <div class="left"></div>
+    <div class="left">
+      <div class="title">
+        <img src="@/assets/img/loginLogo.png" alt />
+        <span class="titleName">黑马面面</span>
+        <span class="titleLine"></span>
+        <span class="titleName2">用户登录</span>
+      </div>
+    </div>
     <div class="right">
       <img src="@/assets/img/login_banner_ele.png" alt />
     </div>
@@ -31,7 +38,29 @@ export default {
     width: 478px;
     height: 550px;
     padding: 42px;
-    background-color: #f5f5f5;
+    background-color: #f5f5f5;  
+    .title {
+      display: flex;
+      align-items: center;
+      .titleName {
+        font-size: 24px;
+        font-weight: 400;
+        color: #0C0C0C;
+        margin: 0 15px;
+      }
+      .titleLine {
+        background-color: #C7C7C7;
+        display: inline-block;
+        width: 2px;
+        height: 28px;
+      }
+      .titleName2 {
+        font-size: 22px;
+        font-weight: 400;
+        color: #0C0C0C;
+        margin: 0 15px;
+      }
+    }
   }
 }
 </style>
