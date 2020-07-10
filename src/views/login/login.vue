@@ -8,33 +8,44 @@
         <span class="titleName2">用户登录</span>
       </div>
       <!-- 挂载的元素 -->
-      <div id="app">
-        <el-row>
-          <el-input placeholder="请输入用户名" prefix-icon="el-icon-user" v-model="input1"></el-input>
-        </el-row>
-        <el-row>
-          <el-input show-password placeholder="请输入密码" prefix-icon="el-icon-lock" v-model="input2"></el-input>
-        </el-row>
-        <el-row>
-          <el-col class="item" :span="16">
-            <el-input placeholder="请输入验证码" prefix-icon="el-icon-key" v-model="input3"></el-input>
-          </el-col>
-        </el-row>
-      </div>
-      <el-row>
-        <el-checkbox v-model="checked">
-          我已阅读并同意
-          <el-link type="primary">用户协议</el-link>和
-          <el-link type="primary">隐私条款</el-link>
-        </el-checkbox>
-        <!-- 3格 数字设置为几 -->
-      </el-row>
-      <el-row>
-        <el-button type="primary">登录</el-button>
-      </el-row>
-      <el-row>
-        <el-button type="primary">注册</el-button>
-      </el-row>
+      <el-form class="form" ref="ruleForm" :model="ruleForm" :rules="rules">
+        <el-form-item prop="phone">
+          <el-input placeholder="请输入手机号" prefix-icon="el-icon-user" v-model="ruleForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item prop="pass">
+          <el-input
+            show-password
+            placeholder="请输入密码"
+            prefix-icon="el-icon-lock"
+            v-model="ruleForm.pass"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="code">
+          <el-row :gutter="0">
+            <el-col class="item" :span="16">
+              <el-input placeholder="请输入验证码" prefix-icon="el-icon-key" v-model="ruleForm.code"></el-input>
+            </el-col>
+            <el-col :span="8">
+              <img src="@/assets/img/key.jpg" alt class="code" />
+            </el-col>
+          </el-row>
+        </el-form-item>
+        <el-form-item prop="isCheck">
+          <el-checkbox v-model="ruleForm.isCheck" class="checked-em">
+            <span class="el-link">我已阅读并同意</span>
+            <el-link type="primary">用户协议</el-link>
+            <span class="el-link">和</span>
+            <el-link type="primary">隐私条款</el-link>
+          </el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-button class="btn" type="primary" @click="submitForm('ruleForm')">登录</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button class="btn" type="primary">注册</el-button>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="right">
       <img src="@/assets/img/login_banner_ele.png" alt />
@@ -44,15 +55,54 @@
 
 <script>
 export default {
+  name: "login",
   data() {
     return {
-      input1: "",
-      input2: "",
-      input3: "",
-      checked: ""
+      ruleForm: {
+        phone: "",
+        pass: "",
+        code: "",
+        isCheck: ""
+      },
+      rules: {
+        phone: [
+          { required: true, message: "请输入手机号!", trigger: "blur" }
+          // { min: 6, max: 12, message: "长度在 6 到 12 个字符", trigger: "blur" }
+        ],
+        pass: [
+          { required: true, message: "请输入密码!", trigger: "change" },
+          { min: 6, max: 12, message: "请输入6-12位密码!", trigger: "change" }
+        ],
+        code: [
+          {
+            required: true,
+            min: 4,
+            max: 4,
+            message: "请输入验证码!",
+            trigger: "change"
+          }
+        ],
+        isCheck: [
+          { required: true, message: "请填入用户名!", trigger: "change" }
+        ]
+      }
     };
   },
-  name: "login"
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  }
 };
 </script>
 
@@ -62,12 +112,18 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-html,
-body {
+.height {
   height: 100%;
 }
+.width {
+  width: 100%;
+}
+html,
+body {
+  .height;
+}
 .app {
-  height: 100%;
+  .height;
 }
 .login {
   /* 弹性盒子布局 */
@@ -77,7 +133,7 @@ body {
   /* 垂直居中 */
   align-items: center;
   height: 100%;
-  background: linear-gradient(225deg, #1493fa, #01c6fa);
+  background: linear-gradient(225deg, #01c6fa, #1493fa);
   .left {
     width: 478px;
     height: 550px;
@@ -86,36 +142,38 @@ body {
     .title {
       display: flex;
       align-items: center;
-      .titleName {
-        font-size: 24px;
+      .titleName,
+      .titleName2 {
         font-weight: 400;
         color: #0c0c0c;
         margin: 0 15px;
+      }
+      .titleName {
+        font-size: 24px;
       }
       .titleLine {
         background-color: #c7c7c7;
         display: inline-block;
-        width: 2px;
+        width: 1px;
         height: 28px;
       }
       .titleName2 {
         font-size: 22px;
-        font-weight: 400;
-        color: #0c0c0c;
-        margin: 0 15px;
       }
     }
-    // #app .el-input {
-    //   margin-top: 25px;
-    // }
-    .el-row {
-      margin-top: 32px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #999999;
-    }
-    .el-button {
-      width: 100%;
+    //表单
+    .form {
+      padding-top: 30px;
+      .code {
+        width: 100%;
+        height: 40px;
+      }
+      .btn {
+        width: 100%;
+      }
+      .btn:last-child {
+        margin-top: 4px;
+      }
     }
   }
 }
